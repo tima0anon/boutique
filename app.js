@@ -5,15 +5,12 @@ const progress = document.querySelector("#progress");
 const shaftLight = document.querySelector("#shaft-light");
 const live = document.querySelector("#live");
 const liveFoot = document.querySelector("#live-foot");
-const cursor = document.querySelector("#cursor");
 const hero = document.querySelector("#hero");
 const heroImg = hero.querySelector("img");
 const rail = document.querySelector("#walk-rail");
 const caption = document.querySelector("#walk-caption");
 const motion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fine = window.matchMedia("(pointer:fine)").matches && !motion;
-document.body.classList.toggle("fine", fine);
-if (!fine) cursor.remove();
 
 function minutesNow() {
   const parts = new Intl.DateTimeFormat("en-GB", {
@@ -111,48 +108,25 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 });
 
 if (fine) {
-  window.addEventListener("pointermove", (event) => {
-    cursor.style.left = `${event.clientX}px`;
-    cursor.style.top = `${event.clientY}px`;
-    const hot = event.target.closest("a, button");
-    cursor.classList.toggle("is-hot", Boolean(hot));
+  hero.addEventListener("pointermove", (event) => {
     const bounds = hero.getBoundingClientRect();
-    if (event.clientY >= bounds.top && event.clientY <= bounds.bottom) {
-      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-      heroImg.style.transform = `translate(${x * -24}px, ${y * -16}px) scale(1.08)`;
-    }
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    heroImg.style.transform = `translate(${x * -24}px, ${y * -16}px) scale(1.08)`;
   });
 }
 
+const plateNote = document.querySelector("#plate-note");
+function chooseDish(item) {
+  document.querySelectorAll("#menu button").forEach((button) => button.classList.remove("is-hot"));
+  item.classList.add("is-hot");
+  plateNote.textContent = `${item.dataset.note} · ${item.textContent}`;
+}
 document.querySelectorAll("#menu button").forEach((item) => {
-  item.addEventListener("pointerenter", () => {
-    document.querySelectorAll("#menu button").forEach((button) => button.classList.remove("is-hot"));
-    item.classList.add("is-hot");
-  });
-  item.addEventListener("focus", () => item.dispatchEvent(new Event("pointerenter")));
+  item.addEventListener("pointerenter", () => chooseDish(item));
+  item.addEventListener("click", () => chooseDish(item));
+  item.addEventListener("focus", () => chooseDish(item));
 });
-
-let dragging = false;
-let startX = 0;
-let startLeft = 0;
-rail.addEventListener("pointerdown", (event) => {
-  dragging = true;
-  rail.classList.add("is-dragging");
-  startX = event.clientX;
-  startLeft = rail.scrollLeft;
-  rail.setPointerCapture(event.pointerId);
-});
-rail.addEventListener("pointermove", (event) => {
-  if (!dragging) return;
-  rail.scrollLeft = startLeft - (event.clientX - startX);
-});
-const stopDrag = () => {
-  dragging = false;
-  rail.classList.remove("is-dragging");
-};
-rail.addEventListener("pointerup", stopDrag);
-rail.addEventListener("pointercancel", stopDrag);
 
 const frames = [...rail.querySelectorAll("figure")];
 const watchRail = () => {
