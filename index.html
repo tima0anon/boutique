@@ -17,6 +17,8 @@
   <script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+
   <header class="site-header" id="header">
     <div class="wrap header">
       <a class="logo" href="#top" aria-label="Boutique — наверх">
@@ -27,128 +29,104 @@
         <span></span><span></span>
       </button>
       <nav id="nav" aria-label="Навигация">
-        <a href="#floors">Этажи</a>
+        <a href="#lift">Этажи</a>
         <a href="#kitchen">Кухня</a>
         <a href="#night">Вечер</a>
-        <a href="#gallery">Атмосфера</a>
+        <a href="#gallery">Проход</a>
         <a href="#visit">Визит</a>
       </nav>
       <a class="book" href="tel:+79888888586">Забронировать</a>
     </div>
   </header>
 
+  <aside class="shaft" aria-label="Лифт по этажам">
+    <button type="button" data-go="1" aria-pressed="true">01</button>
+    <div class="shaft-track"><i id="shaft-light"></i></div>
+    <button type="button" data-go="2" aria-pressed="false">02</button>
+  </aside>
+
   <main id="top">
-    <section class="hero">
+    <section class="hero" id="hero">
       <img src="images/01.jpg" alt="Ночной вход Boutique: ресторан, караоке и бар">
       <div class="hero-shade"></div>
       <div class="wrap hero-copy">
         <p class="eyebrow">Краснодар · Красных Партизан, 204</p>
         <h1>Boutique</h1>
         <p class="hero-lead">Ресторан модной кухни.<br>Караоке. Бар-клуб.</p>
-        <div class="hero-floors">
-          <a href="#floors"><b>01</b> этаж · ресторан</a>
-          <a href="#night"><b>02</b> этаж · бар и караоке</a>
-        </div>
+        <p class="live" id="live" role="status">Смотрим время Краснодара…</p>
       </div>
     </section>
 
-    <div class="ticker" aria-hidden="true">
-      <div>
-        <span>Модная кухня</span><i></i>
-        <span>Караоке</span><i></i>
-        <span>Бар-клуб</span><i></i>
-        <span>Этаж 1</span><i></i>
-        <span>Этаж 2</span><i></i>
-        <span>VIP</span><i></i>
-        <span>Модная кухня</span><i></i>
-        <span>Караоке</span><i></i>
-        <span>Бар-клуб</span><i></i>
-        <span>Этаж 1</span><i></i>
-        <span>Этаж 2</span><i></i>
-        <span>VIP</span><i></i>
-      </div>
-    </div>
-
-    <section class="intro wrap reveal" id="about">
-      <p class="kicker">Комплекс</p>
-      <h2>Два этажа.<br><em>Один вечер.</em></h2>
+    <section class="intro wrap">
+      <p class="kicker reveal">Дом из двух этажей</p>
+      <h2 class="reveal">Свет идёт<br><em>снизу вверх.</em></h2>
       <div class="intro-grid">
-        <p>
+        <p class="reveal">
           Boutique стоит на Красных Партизан, 204, рядом с бизнес-центром Capital City.
-          На первом этаже — ресторан, VIP-комната и детская зона.
-          На втором — бар, караоке и ещё одна VIP-комната.
+          Первый этаж держит день: ресторан, VIP-комната и детская зона.
+          Второй зажигается вечером: бар, караоке и ещё одна VIP-комната.
         </p>
-        <p>
-          Кухня европейская и паназиатская. По вечерам открываются бар и профессиональное караоке:
-          гости отмечают звук, свет и то, что петь здесь комфортно.
+        <p class="reveal">
+          Кухня европейская и паназиатская. Часы на странице считают краснодарское время
+          и сами говорят, какой этаж сейчас открыт.
         </p>
       </div>
     </section>
 
-    <section class="floors" id="floors">
-      <article class="floor reveal">
-        <figure>
-          <img src="images/02.jpg" alt="Зал ресторана Boutique: горчичные кресла и мраморные столы">
-        </figure>
-        <div class="floor-copy">
-          <p>Этаж 01</p>
-          <h3>Ресторан</h3>
-          <span>Ежедневно 08:00–01:00</span>
-          <ul>
-            <li>Авторская подача и модная кухня</li>
-            <li>VIP-комната</li>
-            <li>Детская зона и детское меню</li>
-          </ul>
+    <section class="lift" id="lift">
+      <div class="lift-stage">
+        <img class="lift-photo is-on" data-floor="1" src="images/02.jpg" alt="Зал ресторана: горчичные кресла и мрамор">
+        <img class="lift-photo" data-floor="2" src="images/03.jpg" alt="Бар со светящейся столешницей из смолы">
+        <div class="lift-shade"></div>
+        <div class="wrap lift-ui">
+          <div class="lift-switch" role="tablist" aria-label="Выбор этажа">
+            <button type="button" role="tab" id="tab-1" data-floor="1" aria-selected="true" aria-controls="panel-1">01 · Ресторан</button>
+            <button type="button" role="tab" id="tab-2" data-floor="2" aria-selected="false" aria-controls="panel-2">02 · Бар и караоке</button>
+          </div>
+          <article class="lift-panel is-on" id="panel-1" data-floor="1" role="tabpanel" aria-labelledby="tab-1">
+            <p>Этаж 01 · ежедневно 08:00–01:00</p>
+            <h3>Ресторан</h3>
+            <ul>
+              <li>Авторская подача и модная кухня</li>
+              <li>VIP-комната</li>
+              <li>Детская зона и детское меню</li>
+            </ul>
+          </article>
+          <article class="lift-panel" id="panel-2" data-floor="2" role="tabpanel" aria-labelledby="tab-2" hidden>
+            <p>Этаж 02 · 20:00–05:00</p>
+            <h3>Бар и караоке</h3>
+            <ul>
+              <li>Бар-клуб и отдельная локация караоке</li>
+              <li>Ещё одна VIP-комната</li>
+              <li>Живая музыка и танцы</li>
+            </ul>
+          </article>
         </div>
-      </article>
-      <article class="floor night-floor reveal">
-        <figure>
-          <img src="images/03.jpg" alt="Барная стойка Boutique со светящейся столешницей из смолы">
-        </figure>
-        <div class="floor-copy">
-          <p>Этаж 02</p>
-          <h3>Бар и караоке</h3>
-          <span>20:00–05:00</span>
-          <ul>
-            <li>Бар-клуб и отдельная локация караоке</li>
-            <li>Ещё одна VIP-комната</li>
-            <li>Живая музыка и танцы</li>
-          </ul>
-        </div>
-      </article>
+      </div>
     </section>
 
     <section class="kitchen wrap" id="kitchen">
-      <div class="section-head reveal">
-        <div>
+      <div class="section-head">
+        <div class="reveal">
           <p class="kicker">Кухня</p>
           <h2>Европейская<br><em>и паназиатская.</em></h2>
         </div>
-        <p class="aside">Средний счёт в карточках — 2&nbsp;500–6&nbsp;000&nbsp;₽. Ниже — позиции из открытого описания меню.</p>
+        <p class="aside reveal">Средний счёт в карточках — 2&nbsp;500–6&nbsp;000&nbsp;₽. Наведите на строку: это позиции из открытого описания меню.</p>
       </div>
       <div class="kitchen-grid">
-        <figure class="reveal">
-          <img src="images/05.jpg" alt="Подача блюд в Boutique: осьминог, зелень и салат">
+        <figure>
+          <img id="plate" src="images/05.jpg" alt="Подача блюд в Boutique">
         </figure>
-        <div class="menu reveal">
-          <div>
-            <span>Закуски</span>
-            <strong>Брускетта с бри</strong>
-            <strong>Севиче из гребешка</strong>
-            <strong>Опаленный тунец</strong>
-          </div>
-          <div>
-            <span>Горячее</span>
-            <strong>Мисо-рамен с говядиной</strong>
-            <strong>Том ям с морепродуктами</strong>
-            <strong>Осьминог с ромеско</strong>
-          </div>
-          <div>
-            <span>Десерт</span>
-            <strong>Сан-Себастьян</strong>
-            <strong>Тирамису матча</strong>
-            <strong>Кокосовый мусс</strong>
-          </div>
+        <div class="menu" id="menu">
+          <button type="button" class="is-hot" data-note="Закуска">Брускетта с бри</button>
+          <button type="button" data-note="Закуска">Севиче из гребешка</button>
+          <button type="button" data-note="Закуска">Опаленный тунец</button>
+          <button type="button" data-note="Горячее">Мисо-рамен с говядиной</button>
+          <button type="button" data-note="Горячее">Том ям с морепродуктами</button>
+          <button type="button" data-note="Горячее">Осьминог с ромеско</button>
+          <button type="button" data-note="Десерт">Сан-Себастьян</button>
+          <button type="button" data-note="Десерт">Тирамису матча</button>
+          <button type="button" data-note="Десерт">Кокосовый мусс</button>
         </div>
       </div>
     </section>
@@ -164,31 +142,36 @@
           </p>
           <a class="book light" href="tel:+79888888586">Позвонить в зал</a>
         </div>
-        <figure class="reveal">
-          <img src="images/12.jpg" alt="Вечерний зал Boutique с цветным светом и сервировкой">
+        <figure class="resin reveal">
+          <img src="images/12.jpg" alt="Вечерний зал Boutique с цветным светом">
+          <img class="resin-glow" src="images/09.jpg" alt="Стол из эпоксидной смолы с цветами">
         </figure>
       </div>
     </section>
 
-    <section class="gallery wrap" id="gallery">
-      <div class="section-head reveal">
-        <div>
-          <p class="kicker">Атмосфера</p>
-          <h2>Свет, камень<br><em>и бархат.</em></h2>
+    <section class="walk" id="gallery">
+      <div class="wrap walk-head">
+        <div class="reveal">
+          <p class="kicker">Проход</p>
+          <h2>Пройдите<br><em>по дому.</em></h2>
         </div>
+        <p class="aside reveal" id="walk-caption">Фасад ночью</p>
       </div>
-      <div class="mosaic">
-        <figure class="wide reveal"><img src="images/06.jpg" alt="Фасад Boutique ночью"></figure>
-        <figure class="reveal"><img src="images/11.jpg" alt="Барная зона с пёстрым полом"></figure>
-        <figure class="reveal"><img src="images/08.jpg" alt="Светильники над столами ресторана"></figure>
-        <figure class="tall reveal"><img src="images/09.jpg" alt="Стол из эпоксидной смолы с цветами"></figure>
-        <figure class="reveal"><img src="images/07.jpg" alt="Смоляная карточка с названием Boutique"></figure>
+      <div class="walk-rail" id="walk-rail" tabindex="0">
+        <figure data-caption="Фасад ночью"><img src="images/06.jpg" alt="Фасад Boutique ночью"></figure>
+        <figure data-caption="Зал ресторана"><img src="images/02.jpg" alt="Зал ресторана"></figure>
+        <figure data-caption="Свет над столами"><img src="images/08.jpg" alt="Светильники над столами"></figure>
+        <figure data-caption="Барная зона"><img src="images/11.jpg" alt="Барная зона"></figure>
+        <figure data-caption="Стойка из смолы"><img src="images/03.jpg" alt="Барная стойка"></figure>
+        <figure data-caption="Вечерний свет"><img src="images/12.jpg" alt="Вечерний зал"></figure>
+        <figure data-caption="Смоляной стол"><img src="images/09.jpg" alt="Стол из смолы"></figure>
+        <figure data-caption="Карточка дома"><img src="images/07.jpg" alt="Карточка Boutique"></figure>
       </div>
     </section>
 
     <section class="voices wrap">
-      <div class="section-head reveal">
-        <div>
+      <div class="section-head">
+        <div class="reveal">
           <p class="kicker">Гости</p>
           <h2>4,2 <small>на Яндекс Картах · 48 оценок</small></h2>
         </div>
@@ -211,16 +194,17 @@
 
     <section class="visit" id="visit">
       <div class="wrap visit-grid">
-        <div class="reveal">
-          <p class="kicker pale">Визит</p>
-          <h2>Красных<br>Партизан, 204.</h2>
-          <dl>
+        <div>
+          <p class="kicker pale reveal">Визит</p>
+          <h2 class="reveal">Красных<br>Партизан, 204.</h2>
+          <p class="live live-light reveal" id="live-foot"></p>
+          <dl class="reveal">
             <div><dt>Ресторан</dt><dd>ежедневно, 08:00–01:00</dd></div>
             <div><dt>Бар и караоке</dt><dd>20:00–05:00</dd></div>
             <div><dt>Телефон</dt><dd><a href="tel:+79888888586">+7 988 888-85-86</a></dd></div>
             <div><dt>Рядом</dt><dd>остановка «Улица Котовского», около 150 метров</dd></div>
           </dl>
-          <div class="visit-links">
+          <div class="visit-links reveal">
             <a class="book light" href="tel:+79888888586">Позвонить</a>
             <a href="https://t.me/boutiquekrd" target="_blank" rel="noopener">Telegram</a>
             <a href="https://vk.com/club237624783" target="_blank" rel="noopener">ВКонтакте</a>
@@ -228,7 +212,7 @@
           </div>
         </div>
         <figure class="reveal">
-          <img src="images/01.jpg" alt="Вывеска Boutique у входа">
+          <img src="images/06.jpg" alt="Дом Boutique на Красных Партизан">
         </figure>
       </div>
     </section>
@@ -240,6 +224,7 @@
     <a href="#top">Наверх</a>
   </footer>
 
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
   <script src="app.js"></script>
 </body>
 </html>
